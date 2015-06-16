@@ -31,6 +31,10 @@ public class MenuFragment extends Fragment {
 
 
 
+	/**
+	 * Update UI of MenuFragment
+	 * @param mVenueList
+	 */
 	public void updateUI(List<Venue> mVenueList){
 		MainAdapter mAdapter = new MainAdapter(mVenueList,mContext);
 		menuList.setAdapter(mAdapter);

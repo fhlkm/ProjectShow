@@ -31,6 +31,7 @@ public class MainAdapter extends BaseAdapter{
 		this.mInflater = LayoutInflater.from(mContext);
 	}
 
+	
 	@Override
 	public int getCount() {
 
@@ -39,6 +40,7 @@ public class MainAdapter extends BaseAdapter{
 		return 0;
 	}
 
+	
 	@Override
 	public Object getItem(int arg0) {
 
@@ -53,6 +55,11 @@ public class MainAdapter extends BaseAdapter{
 		return arg0;
 	}
 
+	
+	/* Inflate View by Venue
+	 * (non-Javadoc)
+	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+	 */
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
 		ViewHolder holder;
@@ -72,7 +79,6 @@ public class MainAdapter extends BaseAdapter{
 		holder.address.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());
 		
 		View itemLayout = (View) convertView.findViewById(R.id.mItem);
-		final int position = arg0;
 		// In pad
 		if(	((MainActivity)mContext).getDetailLayout() != null){
 			itemLayout.setOnClickListener(new View.OnClickListener() {

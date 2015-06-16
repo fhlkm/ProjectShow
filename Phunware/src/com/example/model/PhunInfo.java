@@ -1,7 +1,11 @@
 package com.example.model;
 
 import java.util.List;
-
+/**
+ * Create a singleton to store data
+ * @author hanlu Feng
+ *
+ */
 public class PhunInfo {
 	
 	private static PhunInfo mDetailDate = null;

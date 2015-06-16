@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -43,7 +42,7 @@ public class DetailFragment extends Fragment{
 	}
 
 	/**
-	 * Just incase View is null, we will show view in OnResume
+	 * Just in case View is null, we will show view in OnResume
 	 */
 	@Override
 	public void onResume() {
