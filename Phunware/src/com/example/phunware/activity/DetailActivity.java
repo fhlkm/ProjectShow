@@ -1,66 +1,55 @@
 package com.example.phunware.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.androidquery.AQuery;
+import com.example.model.PhunInfo;
 import com.example.phunware.R;
-
+import com.example.phunware.fragment.DetailFragment;
+/**
+ * Detail Activity is used to show the detail information 
+ * @author hanlu Feng
+ *
+ */
 @SuppressWarnings("deprecation")
 public class DetailActivity extends ActionBarActivity {
-	private AQuery mAquery =null;
 	private ShareActionProvider mShareActionProvider;
-	private String name= null;
-	private String address= null;
+	private DetailFragment mfragment;
+	/**
+	 * Create DetailActivity
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
-
 			setContentView(R.layout.detail_page);
-			LinearLayout detailPage = (LinearLayout)findViewById(R.id.detail_page);
-			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = layoutInflater.inflate(R.layout.detail,detailPage );
-			Intent mIntent = this.getIntent(); 
-			String city = mIntent.getStringExtra("city");
-			address = mIntent.getStringExtra("address");
-			String state = mIntent.getStringExtra("state");
-			name = 	 mIntent.getStringExtra("name");
-			String imageUrl = mIntent.getStringExtra("imageurl");
-			String zip =mIntent.getStringExtra("zip");
-			if(mAquery ==null){
-				mAquery = new AQuery(this);
-			}
-			if(null != imageUrl&&!imageUrl.equals(""))
-			mAquery.id(R.id.image).image(imageUrl, false, true);
-			
-			TextView mName = (TextView)view.findViewById(R.id.name);
-			mName.setText(name);
-			TextView homeAddress = (TextView)view.findViewById(R.id.homeAddress);
-			homeAddress.setText(address);
-			TextView cityAddress = (TextView)view.findViewById(R.id.cityAddress);
-			cityAddress.setText(city+","+state+" "+zip);
-			
-			
+			setTitle("Detail");
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			mfragment = new DetailFragment();
+			mfragment.setmVenue(PhunInfo.getInstance().getmVenue());
+			fragmentTransaction.add(R.id.detail_page, mfragment);
+			fragmentTransaction.commit();
+			ActionBar actionBar = getSupportActionBar();
+			actionBar.setHomeButtonEnabled(true);	
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setLogo(R.drawable.home);
+			actionBar.setHomeAsUpIndicator(R.drawable.up);		
 			
 		
 	}
-
+/**
+ * 	Override the method to Inflate menu resource file.
+ */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-//		return super.onCreateOptionsMenu(menu);
 		 // Inflate menu resource file.
 	    getMenuInflater().inflate(R.menu.main, menu);
 
@@ -70,24 +59,23 @@ public class DetailActivity extends ActionBarActivity {
 	    // Fetch and store ShareActionProvider
 	    mShareActionProvider = new ShareActionProvider(this);
 	    MenuItemCompat.setActionProvider(item, mShareActionProvider);
-
-
-	    // Return true to display menu
+	    composeMessage(PhunInfo.getInstance().getmVenue().getName(),PhunInfo.getInstance().getmVenue().getAddress());
 	    return super.onCreateOptionsMenu(menu);
 	}
-	
+	/**
+	 * When we select the UpIndicator, we will finish the Activity
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.menu_item_share:
-	    	
-	        	composeMessage(name,address);
-	            return true;
-	
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	

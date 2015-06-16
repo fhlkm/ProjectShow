@@ -14,7 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.phunware.activity.MainActivity;
 
@@ -26,6 +25,12 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	public DownloadTask(Context mContext) {
 		 mypDialog=new ProgressDialog(mContext);
 		 this.mContext = mContext;
+         mypDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+         mypDialog.setTitle("Downloading");
+         mypDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
+         mypDialog.setProgress(0);
+         mypDialog.setIndeterminate(false);
+         mypDialog.setCancelable(false);
 		 
 	}
 
@@ -72,12 +77,12 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 
-		            mypDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		            mypDialog.setTitle("Downloading");
-		            mypDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
+//		            mypDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//		            mypDialog.setTitle("Downloading");
+//		            mypDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
 		            mypDialog.setProgress(values[0]);
-		            mypDialog.setIndeterminate(false);
-		            mypDialog.setCancelable(false);
+//		            mypDialog.setIndeterminate(false);
+//		            mypDialog.setCancelable(false);
 		            mypDialog.show();    
 	}
 	

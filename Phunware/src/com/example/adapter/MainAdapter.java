@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.data.Venue;
+import com.example.model.PhunInfo;
+import com.example.model.Venue;
 import com.example.phunware.R;
 import com.example.phunware.activity.DetailActivity;
 import com.example.phunware.activity.MainActivity;
@@ -71,14 +72,13 @@ public class MainAdapter extends BaseAdapter{
 		holder.address.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());
 		
 		View itemLayout = (View) convertView.findViewById(R.id.mItem);
-		
+		final int position = arg0;
 		// In pad
-		if(	((MainActivity)mContext).getDetailFragment() != null){
+		if(	((MainActivity)mContext).getDetailLayout() != null){
 			itemLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity)mContext).getDetailFragment().updateUI(veneu);
-					((MainActivity)mContext).setmVenue(veneu);
+					((MainActivity)mContext).getmDetailfragment().updateUI(veneu);				
 				}
 			});
 
@@ -87,12 +87,8 @@ public class MainAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(mContext, DetailActivity.class);		
-					intent.putExtra("city", veneu.getCity());
-					intent.putExtra("address", veneu.getAddress());
-					intent.putExtra("name", veneu.getName());
-					intent.putExtra("state", veneu.getState());
-					intent.putExtra("imageurl",veneu.getImageUrl());
-					intent.putExtra("zip",veneu.getZip());
+					PhunInfo mDetailDate = PhunInfo.getInstance();
+					mDetailDate.setmVenue(veneu);
 					mContext.startActivity(intent);
 				}
 			});

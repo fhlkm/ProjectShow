@@ -3,59 +3,98 @@ package com.example.phunware.activity;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
-import com.example.data.Venue;
 import com.example.download.DownloadTask;
+import com.example.model.PhunInfo;
+import com.example.model.Venue;
 import com.example.phunware.R;
 import com.example.phunware.fragment.DetailFragment;
 import com.example.phunware.fragment.MenuFragment;
 import com.example.url.DownloadURL;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends ActionBarActivity	 {
 
 	private ListView mlist;
 	private MenuFragment menuFragment;
-	private DetailFragment detailFragment;
+	private FrameLayout detailLayout;
 	private ShareActionProvider mShareActionProvider;
+	private DetailFragment mDetailfragment;
 	private Venue mVenue;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_page);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(false);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeAsUpIndicator(R.drawable.home);
+		menuFragment =(MenuFragment) getSupportFragmentManager().findFragmentById(R.id.menu_fragment);
+		menuFragment.setmContext(this);
+		detailLayout =(FrameLayout)findViewById(R.id.details_layout);
+		if(detailLayout==null ){
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}else{
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			mDetailfragment = new DetailFragment();
+			fragmentTransaction.add(R.id.details_layout, mDetailfragment);
+			fragmentTransaction.commit();
+		}	
+		mlist = menuFragment.getMenuList();
+		if(PhunInfo.getInstance().getMlist()==null){	
 		DownloadTask dTask = new DownloadTask(this);
 		dTask.execute(DownloadURL.DOWNLOAD_URL);
-		menuFragment =(MenuFragment) getSupportFragmentManager().findFragmentById(R.id.menu_fragment);
-		detailFragment =(DetailFragment) getSupportFragmentManager().findFragmentById(R.id.details_layout);
-		
-		
+		}else{
+			fillView(PhunInfo.getInstance().getMlist());
+		}
 	}
 	
 	
 	public void fillView(String venue){
-		Gson gson = new Gson();
+		GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("yy-MM-dd hh:mm:ss Z");
+		Gson gson = gsonBuilder.create();
 		List<Venue> mVenueList = gson.fromJson(venue, new TypeToken<List<Venue>>(){}.getType());
+		if(PhunInfo.getInstance().getMlist()==null){
+			PhunInfo.getInstance().setMlist(mVenueList);
+		}
+		fillView(mVenueList);
+	
+	}
+
+	public void fillView(List<Venue> mVenueList){
 		menuFragment.updateUI(mVenueList);
-		if(detailFragment!= null&& mVenueList.size()>0){
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();			
+		if(detailLayout!= null&& mVenueList.size()>0){
+			mVenue = mVenueList.get(0);
+			mDetailfragment.updateUI(mVenue);
 			mlist.setItemChecked(0,true);
+		    composeMessage(mVenue.getName(),mVenue.getAddress());		
 		}
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-//		return super.onCreateOptionsMenu(menu);
 		 // Inflate menu resource file.
+		if(detailLayout!=null){
 	    getMenuInflater().inflate(R.menu.main, menu);
 
 	    // Locate MenuItem with ShareActionProvider
@@ -63,7 +102,10 @@ public class MainActivity extends ActionBarActivity	 {
 
 	    // Fetch and store ShareActionProvider
 	    mShareActionProvider = new ShareActionProvider(this);
-	    MenuItemCompat.setActionProvider(item, mShareActionProvider);
+	    MenuItemCompat.setActionProvider(item, mShareActionProvider); 
+	    composeMessage("","");
+	    
+		}
 
 
 	    // Return true to display menu
@@ -73,15 +115,16 @@ public class MainActivity extends ActionBarActivity	 {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.menu_item_share:
-	    	
-	        	composeMessage(getmVenue().getName(),getmVenue().getAddress());
-	            return true;
-	
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+
+		case R.id.menu_item_share:
+
+			composeMessage(getmVenue().getName(),getmVenue().getAddress());
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	
@@ -125,14 +168,36 @@ public class MainActivity extends ActionBarActivity	 {
 	}
 
 
-	public DetailFragment getDetailFragment() {
-		return detailFragment;
+	public FrameLayout getDetailLayout() {
+		return detailLayout;
 	}
 
 
-	public void setDetailFragment(DetailFragment detailFragment) {
-		this.detailFragment = detailFragment;
+	public void setDetailLayout(FrameLayout detailLayout) {
+		this.detailLayout = detailLayout;
 	}
-	
+
+
+	public ListView getMlist() {
+		return mlist;
+	}
+
+
+	public void setMlist(ListView mlist) {
+		this.mlist = mlist;
+	}
+
+
+	public DetailFragment getmDetailfragment() {
+		return mDetailfragment;
+	}
+
+
+	public void setmDetailfragment(DetailFragment mDetailfragment) {
+		this.mDetailfragment = mDetailfragment;
+	}
+
+
+
 	
 }

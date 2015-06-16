@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:phunware="http://schemas.android.com/apk/com.example.phunware" >
+    xmlns:phunware="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/menu_item_share"
-        android:title="@string/share"
+        android:title="@string/share"   
         phunware:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-        phunware:showAsAction="ifRoom|withText"/>
+        phunware:showAsAction="ifRoom" android:enabled="true"/>
 
 </menu>
