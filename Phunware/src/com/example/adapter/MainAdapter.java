@@ -22,9 +22,6 @@ public class MainAdapter extends BaseAdapter{
 	private Context mContext=null;
 	private LayoutInflater mInflater;
 	
-	
-	
-
 	public MainAdapter(List<Venue> mVenueList, Context mContext) {
 		this.mVenueList = mVenueList;
 		this.mContext = mContext;
@@ -32,6 +29,10 @@ public class MainAdapter extends BaseAdapter{
 	}
 
 	
+	/* (non-Javadoc)
+	 * Get Count of items
+	 * @see android.widget.Adapter#getCount()
+	 */
 	@Override
 	public int getCount() {
 
@@ -41,6 +42,10 @@ public class MainAdapter extends BaseAdapter{
 	}
 
 	
+	/* (non-Javadoc)
+	 * Get detail of Item
+	 * @see android.widget.Adapter#getItem(int)
+	 */
 	@Override
 	public Object getItem(int arg0) {
 
@@ -49,6 +54,10 @@ public class MainAdapter extends BaseAdapter{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * Get item Id
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
 	@Override
 	public long getItemId(int arg0) {
 
@@ -64,30 +73,26 @@ public class MainAdapter extends BaseAdapter{
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
 		ViewHolder holder;
 		if(convertView == null){
-			 convertView = mInflater.inflate(R.layout.item,null);
-             holder = new ViewHolder();
-                               
-            holder.name = (TextView) convertView.findViewById(R.id.mName);
-            holder.address = (TextView) convertView.findViewById(R.id.mAddress);
-            convertView.setTag(holder);
+			convertView = mInflater.inflate(R.layout.item,null);
+			holder = new ViewHolder();                             
+			holder.mName = (TextView) convertView.findViewById(R.id.mName);
+			holder.mAddress = (TextView) convertView.findViewById(R.id.mAddress);
+			convertView.setTag(holder);
 		}else{
-			 holder = (ViewHolder)convertView.getTag();
+			holder = (ViewHolder)convertView.getTag();
 		}
 		final Venue veneu = mVenueList.get(arg0);
-		holder.name.setText(veneu.getName());
-		
-		holder.address.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());
-		
-		View itemLayout = (View) convertView.findViewById(R.id.mItem);
+		holder.mName.setText(veneu.getName());
+		holder.mAddress.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());
+		View itemLayout = (View) convertView.findViewById(R.id.mItem);	
 		// In pad
 		if(	((MainActivity)mContext).getDetailLayout() != null){
 			itemLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity)mContext).getmDetailfragment().updateUI(veneu);				
+					((MainActivity)mContext).getmDetailfragment().updateUI(veneu);					
 				}
 			});
-
 		}else{
 			itemLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -95,7 +100,7 @@ public class MainAdapter extends BaseAdapter{
 					Intent intent = new Intent(mContext, DetailActivity.class);		
 					PhunInfo mDetailDate = PhunInfo.getInstance();
 					mDetailDate.setmVenue(veneu);
-					mContext.startActivity(intent);
+					mContext.startActivity(intent);			
 				}
 			});
 
@@ -104,8 +109,8 @@ public class MainAdapter extends BaseAdapter{
 	}
 	
 	  public class ViewHolder{
-	        public TextView name;
-	        public TextView address;
+	        public TextView mName;
+	        public TextView mAddress;
 
 	    }
 

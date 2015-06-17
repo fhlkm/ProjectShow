@@ -31,8 +31,9 @@ public class DetailFragment extends Fragment{
 	public void setmVenue(Venue mVenue) {
 		this.mVenue = mVenue;
 	}
-	/**
-	 * Inflate the view of Fragment
+	/* (non-Javadoc)
+	 * Inflate the Fragment's view
+	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,8 +42,9 @@ public class DetailFragment extends Fragment{
 		return view;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * Just in case View is null, we will show view in OnResume
+	 * @see android.support.v4.app.Fragment#onResume()
 	 */
 	@Override
 	public void onResume() {
@@ -63,7 +65,7 @@ public class DetailFragment extends Fragment{
 		boolean memCache = true;
 		boolean fileCache = true;
 		if(mVenue != null&&null != view){
-			mAquery.id(R.id.image).image(mVenue.getImageUrl(), memCache, fileCache,0,R.drawable.empty);
+			mAquery.id(R.id.image).image(mVenue.getImageUrl(), memCache, fileCache,0,R.drawable.big_empty);
 			TextView name = (TextView)view.findViewById(R.id.name);
 			name.setText(mVenue.getName());
 			TextView homeAddress = (TextView)view.findViewById(R.id.homeAddress);

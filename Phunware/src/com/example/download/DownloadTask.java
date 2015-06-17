@@ -2,101 +2,120 @@ package com.example.download;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import com.example.phunware.R;
 import com.example.phunware.activity.MainActivity;
 
+/**
+ * @author hanlu Feng
+ *
+ */
 public class DownloadTask extends AsyncTask<String, Integer, String> {
 	
 	
-	ProgressDialog mypDialog=null;
+	ProgressDialog mDialog=null;
 	private Context mContext= null;
 	public DownloadTask(Context mContext) {
-		 mypDialog=new ProgressDialog(mContext);
+		 mDialog=new ProgressDialog(mContext);
 		 this.mContext = mContext;
-         mypDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-         mypDialog.setTitle("Downloading");
-         mypDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
-         mypDialog.setProgress(0);
-         mypDialog.setIndeterminate(false);
-         mypDialog.setCancelable(false);
+         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+         mDialog.setTitle("Downloading");
+         mDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
+         mDialog.setProgress(0);
+         mDialog.setIndeterminate(false);
+         mDialog.setCancelable(false);  
+         mDialog.show(); 
 		 
 	}
 
+	/* (non-Javadoc)
+	 * Download in the background
+	 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
+	 */
 	@Override
 	protected String doInBackground(String... params) {
-
 		if(params!= null){
-			HttpClient client = new DefaultHttpClient();  
-			HttpGet get = new HttpGet(params[0]);  
-			HttpResponse response;
+			HttpURLConnection conn=null;
 			try {
-				response = client.execute(get);
-				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {  
-					HttpEntity entity = response.getEntity();  
-					InputStream is = entity.getContent();  
-					long total = entity.getContentLength();  
+				URL url = new URL(params[0]);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+				if(conn.getResponseCode()==HttpURLConnection.HTTP_OK){
+					InputStream mInput = conn.getInputStream();
+					long mTotal = conn.getContentLength();  
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-					byte[] buf = new byte[1024];  
-					int count = 0;  
-					int length = -1;  
-					while ((length = is.read(buf)) != -1) {  
-						baos.write(buf, 0, length);  
-						count += length;  
-						
-						publishProgress((int) ((count / (float) total) * 100));  
-						
-
+					byte[] mBuf = new byte[1024];  
+					int mCount = 0;  
+					int mLength = -1;  
+					while ((mLength = mInput.read(mBuf)) != -1) {  
+						baos.write(mBuf, 0, mLength);  
+						mCount += mLength;  
+						publishProgress((int) ((mCount / (float) mTotal) * 100));  
 					}  
 					return new String(baos.toByteArray());  
-				}  
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
+				}else{
+					showToast(R.string.checkurl);
+				}
+
+			} catch (MalformedURLException e) {
+				showToast(R.string.checkurl);
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				showToast(R.string.checknet);
 				e.printStackTrace();
-			}  
-
-		} 
+			}finally{
+				conn.disconnect();
+			}
+		}
 		
 		return null;
 	}
 
+	
+	private void showToast(final int info){		
+		((Activity)mContext).runOnUiThread(new Runnable() {
+	        @Override
+	        public void run() {
+	        Toast toast = Toast.makeText(mContext, info, Toast.LENGTH_SHORT);
+	           toast.show();
+	        }
+	    });
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * Update Progress 
+	 * @see android.os.AsyncTask#onProgressUpdate(java.lang.Object[])
+	 */
 	@Override
 	protected void onProgressUpdate(Integer... values) {
-
-//		            mypDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//		            mypDialog.setTitle("Downloading");
-//		            mypDialog.setIcon(com.example.phunware.R.drawable.ic_launcher);
-		            mypDialog.setProgress(values[0]);
-//		            mypDialog.setIndeterminate(false);
-//		            mypDialog.setCancelable(false);
-		            mypDialog.show();    
+				if(null != values){
+		            mDialog.setProgress(values[0]);;
+		            mDialog.show(); 
+				}
 	}
 	
+	/* (non-Javadoc)
+	 * Download is finished
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
 	@Override
 	protected void onPostExecute(String result) {
-		// TODO Auto-generated method stub
-//		Log.i("info", result);
-		mypDialog.dismiss();
+		mDialog.dismiss();
 		((MainActivity)mContext).fillView(result);
 
 	}
 
-
-	
 
 	
 

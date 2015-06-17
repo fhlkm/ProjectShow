@@ -12,14 +12,12 @@
         android:name="com.example.phunware.fragment.MenuFragment"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
     
     <FrameLayout 
         android:id="@+id/details_layout"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="3"
-        ></FrameLayout>
+        android:layout_weight="3" />
 
 </LinearLayout>

@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="share">share</string>
+    <string name="checknet">Please check your Internet Connection</string>
+    <string name="checkurl">Please check your URL</string>
 
 </resources>

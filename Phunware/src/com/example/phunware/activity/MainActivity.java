@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,17 +27,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class MainActivity extends ActionBarActivity	 {
+public class MainActivity extends AppCompatActivity	 {
 
 	private ListView mlist;
 	private MenuFragment menuFragment;
-	private FrameLayout detailLayout;
+	private FrameLayout mDetailLayout;
 	private ShareActionProvider mShareActionProvider;
 	private DetailFragment mDetailfragment;
 	private Venue mVenue;
+	/* (non-Javadoc)
+	 * Create Activity
+	 * @see android.support.v7.app.AppCompatActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_page);
 		ActionBar actionBar = getSupportActionBar();
@@ -46,8 +49,8 @@ public class MainActivity extends ActionBarActivity	 {
 		actionBar.setHomeAsUpIndicator(R.drawable.home);
 		menuFragment =(MenuFragment) getSupportFragmentManager().findFragmentById(R.id.menu_fragment);
 		menuFragment.setmContext(this);
-		detailLayout =(FrameLayout)findViewById(R.id.details_layout);
-		if(detailLayout==null ){
+		mDetailLayout =(FrameLayout)findViewById(R.id.details_layout);
+		if(mDetailLayout==null ){
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}else{
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -62,11 +65,15 @@ public class MainActivity extends ActionBarActivity	 {
 		DownloadTask dTask = new DownloadTask(this);
 		dTask.execute(DownloadURL.DOWNLOAD_URL);
 		}else{
-			fillView(PhunInfo.getInstance().getMlist());
+		fillView(PhunInfo.getInstance().getMlist());
 		}
 	}
 	
 	
+	/**
+	 * Inflate ListView by venue (Inflate Detail page if it exists)
+	 * @param venue
+	 */
 	public void fillView(String venue){
 		GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("yy-MM-dd hh:mm:ss Z");
@@ -80,10 +87,8 @@ public class MainActivity extends ActionBarActivity	 {
 	}
 
 	public void fillView(List<Venue> mVenueList){
-		menuFragment.updateUI(mVenueList);
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();			
-		if(detailLayout!= null&& mVenueList.size()>0){
+		menuFragment.updateUI(mVenueList);			
+		if(mDetailLayout!= null&& mVenueList.size()>0){
 			mVenue = mVenueList.get(0);
 			mDetailfragment.updateUI(mVenue);
 			mlist.setItemChecked(0,true);
@@ -91,10 +96,14 @@ public class MainActivity extends ActionBarActivity	 {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * Create Menu
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		 // Inflate menu resource file.
-		if(detailLayout!=null){
+		if(mDetailLayout!=null){
 	    getMenuInflater().inflate(R.menu.main, menu);
 
 	    // Locate MenuItem with ShareActionProvider
@@ -106,15 +115,17 @@ public class MainActivity extends ActionBarActivity	 {
 	    composeMessage("","");
 	    
 		}
-
-
 	    // Return true to display menu
 	    return super.onCreateOptionsMenu(menu);
 	}
 	
+	/* (non-Javadoc)
+	 * Handle press on the action bar items
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
+	    
 		switch (item.getItemId()) {
 
 		case R.id.menu_item_share:
@@ -169,12 +180,12 @@ public class MainActivity extends ActionBarActivity	 {
 
 
 	public FrameLayout getDetailLayout() {
-		return detailLayout;
+		return mDetailLayout;
 	}
 
 
 	public void setDetailLayout(FrameLayout detailLayout) {
-		this.detailLayout = detailLayout;
+		this.mDetailLayout = detailLayout;
 	}
 
 

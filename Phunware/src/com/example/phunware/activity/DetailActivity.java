@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +19,7 @@ import com.example.phunware.fragment.DetailFragment;
  * @author hanlu Feng
  *
  */
-@SuppressWarnings("deprecation")
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends AppCompatActivity {
 	private ShareActionProvider mShareActionProvider;
 	private DetailFragment mfragment;
 	/**
