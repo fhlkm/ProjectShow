@@ -71,26 +71,29 @@ public class MainAdapter extends BaseAdapter{
 	 */
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
-		ViewHolder holder;
+		ViewHolder mholder;
 		if(convertView == null){
 			convertView = mInflater.inflate(R.layout.item,null);
-			holder = new ViewHolder();                             
-			holder.mName = (TextView) convertView.findViewById(R.id.mName);
-			holder.mAddress = (TextView) convertView.findViewById(R.id.mAddress);
-			convertView.setTag(holder);
+			mholder = new ViewHolder();                             
+			mholder.mName = (TextView) convertView.findViewById(R.id.mName);
+			mholder.mAddress = (TextView) convertView.findViewById(R.id.mAddress);
+			convertView.setTag(mholder);
 		}else{
-			holder = (ViewHolder)convertView.getTag();
+			mholder = (ViewHolder)convertView.getTag();
 		}
-		final Venue veneu = mVenueList.get(arg0);
-		holder.mName.setText(veneu.getName());
-		holder.mAddress.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());
+		final Venue mVeneu = mVenueList.get(arg0);
+		mholder.mName.setText(mVeneu.getName());
+		mholder.mAddress.setText(mVeneu.getAddress()+","+mVeneu.getCity()+","+mVeneu.getState());
 		View itemLayout = (View) convertView.findViewById(R.id.mItem);	
 		// In pad
 		if(	((MainActivity)mContext).getDetailLayout() != null){
 			itemLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity)mContext).getmDetailfragment().updateUI(veneu);					
+					PhunInfo mDetailDate = PhunInfo.getInstance();
+					mDetailDate.setmVenue(mVeneu);
+					((MainActivity)mContext).getmDetailfragment().updateUI(mVeneu);	
+					((MainActivity)mContext).composeMessage(mVeneu.getName(), mVeneu.getAddress());
 				}
 			});
 		}else{
@@ -99,7 +102,7 @@ public class MainAdapter extends BaseAdapter{
 				public void onClick(View v) {
 					Intent intent = new Intent(mContext, DetailActivity.class);		
 					PhunInfo mDetailDate = PhunInfo.getInstance();
-					mDetailDate.setmVenue(veneu);
+					mDetailDate.setmVenue(mVeneu);
 					mContext.startActivity(intent);			
 				}
 			});

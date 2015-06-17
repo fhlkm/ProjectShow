@@ -1,0 +1,124 @@
+[1mdiff --git a/Phunware/bin/Phunware.apk b/Phunware/bin/Phunware.apk[m
+[1mindex 6120e17..2d91715 100644[m
+Binary files a/Phunware/bin/Phunware.apk and b/Phunware/bin/Phunware.apk differ
+[1mdiff --git a/Phunware/bin/classes.dex b/Phunware/bin/classes.dex[m
+[1mindex 6a2609c..e5ab34c 100644[m
+Binary files a/Phunware/bin/classes.dex and b/Phunware/bin/classes.dex differ
+[1mdiff --git a/Phunware/bin/classes/com/example/adapter/MainAdapter$1.class b/Phunware/bin/classes/com/example/adapter/MainAdapter$1.class[m
+[1mindex 20a9f38..9035173 100644[m
+Binary files a/Phunware/bin/classes/com/example/adapter/MainAdapter$1.class and b/Phunware/bin/classes/com/example/adapter/MainAdapter$1.class differ
+[1mdiff --git a/Phunware/bin/classes/com/example/adapter/MainAdapter$2.class b/Phunware/bin/classes/com/example/adapter/MainAdapter$2.class[m
+[1mindex a1c209d..5179643 100644[m
+Binary files a/Phunware/bin/classes/com/example/adapter/MainAdapter$2.class and b/Phunware/bin/classes/com/example/adapter/MainAdapter$2.class differ
+[1mdiff --git a/Phunware/bin/classes/com/example/adapter/MainAdapter$ViewHolder.class b/Phunware/bin/classes/com/example/adapter/MainAdapter$ViewHolder.class[m
+[1mindex 5a4ec35..134f134 100644[m
+Binary files a/Phunware/bin/classes/com/example/adapter/MainAdapter$ViewHolder.class and b/Phunware/bin/classes/com/example/adapter/MainAdapter$ViewHolder.class differ
+[1mdiff --git a/Phunware/bin/classes/com/example/adapter/MainAdapter.class b/Phunware/bin/classes/com/example/adapter/MainAdapter.class[m
+[1mindex be63413..d2e4c05 100644[m
+Binary files a/Phunware/bin/classes/com/example/adapter/MainAdapter.class and b/Phunware/bin/classes/com/example/adapter/MainAdapter.class differ
+[1mdiff --git a/Phunware/bin/classes/com/example/phunware/activity/DetailActivity.class b/Phunware/bin/classes/com/example/phunware/activity/DetailActivity.class[m
+[1mindex 9c8a841..e6b2154 100644[m
+Binary files a/Phunware/bin/classes/com/example/phunware/activity/DetailActivity.class and b/Phunware/bin/classes/com/example/phunware/activity/DetailActivity.class differ
+[1mdiff --git a/Phunware/bin/classes/com/example/phunware/activity/MainActivity.class b/Phunware/bin/classes/com/example/phunware/activity/MainActivity.class[m
+[1mindex d572def..94737a2 100644[m
+Binary files a/Phunware/bin/classes/com/example/phunware/activity/MainActivity.class and b/Phunware/bin/classes/com/example/phunware/activity/MainActivity.class differ
+[1mdiff --git a/Phunware/bin/resources.ap_ b/Phunware/bin/resources.ap_[m
+[1mindex 5b6c3bc..578bcf8 100644[m
+Binary files a/Phunware/bin/resources.ap_ and b/Phunware/bin/resources.ap_ differ
+[1mdiff --git a/Phunware/src/com/example/adapter/MainAdapter.java b/Phunware/src/com/example/adapter/MainAdapter.java[m
+[1mindex 8ac5dfb..7c7e2d9 100644[m
+[1m--- a/Phunware/src/com/example/adapter/MainAdapter.java[m
+[1m+++ b/Phunware/src/com/example/adapter/MainAdapter.java[m
+[36m@@ -71,26 +71,29 @@[m [mpublic class MainAdapter extends BaseAdapter{[m
+ 	 */[m
+ 	@Override[m
+ 	public View getView(int arg0, View convertView, ViewGroup arg2) {[m
+[31m-		ViewHolder holder;[m
+[32m+[m		[32mViewHolder mholder;[m
+ 		if(convertView == null){[m
+ 			convertView = mInflater.inflate(R.layout.item,null);[m
+[31m-			holder = new ViewHolder();                             [m
+[31m-			holder.mName = (TextView) convertView.findViewById(R.id.mName);[m
+[31m-			holder.mAddress = (TextView) convertView.findViewById(R.id.mAddress);[m
+[31m-			convertView.setTag(holder);[m
+[32m+[m			[32mmholder = new ViewHolder();[m[41m                             [m
+[32m+[m			[32mmholder.mName = (TextView) convertView.findViewById(R.id.mName);[m
+[32m+[m			[32mmholder.mAddress = (TextView) convertView.findViewById(R.id.mAddress);[m
+[32m+[m			[32mconvertView.setTag(mholder);[m
+ 		}else{[m
+[31m-			holder = (ViewHolder)convertView.getTag();[m
+[32m+[m			[32mmholder = (ViewHolder)convertView.getTag();[m
+ 		}[m
+[31m-		final Venue veneu = mVenueList.get(arg0);[m
+[31m-		holder.mName.setText(veneu.getName());[m
+[31m-		holder.mAddress.setText(veneu.getAddress()+","+veneu.getCity()+","+veneu.getState());[m
+[32m+[m		[32mfinal Venue mVeneu = mVenueList.get(arg0);[m
+[32m+[m		[32mmholder.mName.setText(mVeneu.getName());[m
+[32m+[m		[32mmholder.mAddress.setText(mVeneu.getAddress()+","+mVeneu.getCity()+","+mVeneu.getState());[m
+ 		View itemLayout = (View) convertView.findViewById(R.id.mItem);	[m
+ 		// In pad[m
+ 		if(	((MainActivity)mContext).getDetailLayout() != null){[m
+ 			itemLayout.setOnClickListener(new View.OnClickListener() {[m
+ 				@Override[m
+ 				public void onClick(View v) {[m
+[31m-					((MainActivity)mContext).getmDetailfragment().updateUI(veneu);					[m
+[32m+[m					[32mPhunInfo mDetailDate = PhunInfo.getInstance();[m
+[32m+[m					[32mmDetailDate.setmVenue(mVeneu);[m
+[32m+[m					[32m((MainActivity)mContext).getmDetailfragment().updateUI(mVeneu);[m[41m	[m
+[32m+[m					[32m((MainActivity)mContext).composeMessage(mVeneu.getName(), mVeneu.getAddress());[m
+ 				}[m
+ 			});[m
+ 		}else{[m
+[36m@@ -99,7 +102,7 @@[m [mpublic class MainAdapter extends BaseAdapter{[m
+ 				public void onClick(View v) {[m
+ 					Intent intent = new Intent(mContext, DetailActivity.class);		[m
+ 					PhunInfo mDetailDate = PhunInfo.getInstance();[m
+[31m-					mDetailDate.setmVenue(veneu);[m
+[32m+[m					[32mmDetailDate.setmVenue(mVeneu);[m
+ 					mContext.startActivity(intent);			[m
+ 				}[m
+ 			});[m
+[1mdiff --git a/Phunware/src/com/example/phunware/activity/DetailActivity.java b/Phunware/src/com/example/phunware/activity/DetailActivity.java[m
+[1mindex 99a5e8f..9046089 100644[m
+[1m--- a/Phunware/src/com/example/phunware/activity/DetailActivity.java[m
+[1m+++ b/Phunware/src/com/example/phunware/activity/DetailActivity.java[m
+[36m@@ -58,6 +58,7 @@[m [mpublic class DetailActivity extends AppCompatActivity {[m
+ 	    // Fetch and store ShareActionProvider[m
+ 	    mShareActionProvider = new ShareActionProvider(this);[m
+ 	    MenuItemCompat.setActionProvider(item, mShareActionProvider);[m
+[32m+[m	[32m    mfragment.updateUI(PhunInfo.getInstance().getmVenue());[m
+ 	    composeMessage(PhunInfo.getInstance().getmVenue().getName(),PhunInfo.getInstance().getmVenue().getAddress());[m
+ 	    return super.onCreateOptionsMenu(menu);[m
+ 	}[m
+[1mdiff --git a/Phunware/src/com/example/phunware/activity/MainActivity.java b/Phunware/src/com/example/phunware/activity/MainActivity.java[m
+[1mindex 9474246..5c05b5f 100644[m
+[1m--- a/Phunware/src/com/example/phunware/activity/MainActivity.java[m
+[1m+++ b/Phunware/src/com/example/phunware/activity/MainActivity.java[m
+[36m@@ -91,8 +91,8 @@[m [mpublic class MainActivity extends AppCompatActivity	 {[m
+ 		if(mDetailLayout!= null&& mVenueList.size()>0){[m
+ 			mVenue = mVenueList.get(0);[m
+ 			mDetailfragment.updateUI(mVenue);[m
+[31m-			mlist.setItemChecked(0,true);[m
+[31m-		    composeMessage(mVenue.getName(),mVenue.getAddress());		[m
+[32m+[m			[32mmlist.setItemChecked(0,true);[m[41m	[m
+[32m+[m		[32m    composeMessage(mVenue.getName(), mVenue.getAddress());[m
+ 		}[m
+ 	}[m
+ [m
+[36m@@ -151,7 +151,7 @@[m [mpublic class MainActivity extends AppCompatActivity	 {[m
+ 	}[m
+ [m
+ [m
+[31m-	private Intent composeMessage(String name, String address){[m
+[32m+[m	[32mpublic void composeMessage(String name, String address){[m
+ 	    Intent mIntent = new Intent(Intent.ACTION_SEND);[m
+ 	    mIntent.setType("text/plain");[m
+ 	   [m
+[36m@@ -163,7 +163,6 @@[m [mpublic class MainActivity extends AppCompatActivity	 {[m
+ 		if (mShareActionProvider != null) {[m
+    	        mShareActionProvider.setShareIntent(mIntent);[m
+    	    }[m
+[31m-		return mIntent;[m
+ 		[m
+ 	}[m
+ 	[m

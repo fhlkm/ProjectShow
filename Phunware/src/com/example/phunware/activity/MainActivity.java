@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity	 {
 		if(mDetailLayout!= null&& mVenueList.size()>0){
 			mVenue = mVenueList.get(0);
 			mDetailfragment.updateUI(mVenue);
-			mlist.setItemChecked(0,true);
-		    composeMessage(mVenue.getName(),mVenue.getAddress());		
+			mlist.setItemChecked(0,true);	
+		    composeMessage(mVenue.getName(), mVenue.getAddress());
 		}
 	}
 
@@ -119,24 +119,6 @@ public class MainActivity extends AppCompatActivity	 {
 	    return super.onCreateOptionsMenu(menu);
 	}
 	
-	/* (non-Javadoc)
-	 * Handle press on the action bar items
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    
-		switch (item.getItemId()) {
-
-		case R.id.menu_item_share:
-
-			composeMessage(getmVenue().getName(),getmVenue().getAddress());
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	
 	
@@ -151,7 +133,7 @@ public class MainActivity extends AppCompatActivity	 {
 	}
 
 
-	private Intent composeMessage(String name, String address){
+	public void composeMessage(String name, String address){
 	    Intent mIntent = new Intent(Intent.ACTION_SEND);
 	    mIntent.setType("text/plain");
 	   
@@ -163,7 +145,6 @@ public class MainActivity extends AppCompatActivity	 {
 		if (mShareActionProvider != null) {
    	        mShareActionProvider.setShareIntent(mIntent);
    	    }
-		return mIntent;
 		
 	}
 	
