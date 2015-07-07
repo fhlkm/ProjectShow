@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity	 {
 	 */
 	public void fillView(String venue){
 		GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("yy-MM-dd hh:mm:ss Z");
+        gsonBuilder.setDateFormat("yyyy-MM-dd hh:mm:ss Z");
 		Gson gson = gsonBuilder.create();
 		List<Venue> mVenueList = gson.fromJson(venue, new TypeToken<List<Venue>>(){}.getType());
 		if(PhunInfo.getInstance().getMlist()==null){
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity	 {
 
 	public void fillView(List<Venue> mVenueList){
 		menuFragment.updateUI(mVenueList);			
-		if(mDetailLayout!= null&& mVenueList.size()>0){
+		if(mDetailLayout!= null&&null != mVenueList&& mVenueList.size()>0){
 			mVenue = mVenueList.get(0);
 			mDetailfragment.updateUI(mVenue);
 			mlist.setItemChecked(0,true);	

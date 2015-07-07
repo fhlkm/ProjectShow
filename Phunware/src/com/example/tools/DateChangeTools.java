@@ -10,14 +10,15 @@ import java.util.TimeZone;
 public final class DateChangeTools {
 
 	/**
+	 * 
 	 * Change originTime to default timeZone date
 	 * @param mOriginTime
 	 * @return
 	 */
 	public 	static String changeGMT2DefaultZone(String  mOriginTime){
 		String mTime =null;
-		DateFormat mSimpleDateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-		mSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));		
+		DateFormat mSimpleDateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH);
+//		mSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));		
 		Date mDate = null;
 		try {
 			mDate = mSimpleDateFormat.parse(mOriginTime);
@@ -30,6 +31,7 @@ public final class DateChangeTools {
 		}
 		return mTime;
 	}
+
 
 
 
